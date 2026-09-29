@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Enterprise AI Search</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: #f5f7fb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 650px;
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+        }
+
+        .left-panel {
+            width: 45%;
+            background: linear-gradient(
+                    145deg,
+                    #172554,
+                    #1e3a8a,
+                    #2563eb
+            );
+            color: white;
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .left-panel h1 {
+            font-size: 40px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .left-panel p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #dbeafe;
+            margin-bottom: 35px;
+        }
+
+        .feature {
+            display: flex;
+            gap: 13px;
+            align-items: center;
+            margin: 18px 0;
+        }
+
+        .check {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .right-panel {
+            width: 55%;
+            padding: 55px 65px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-panel h2 {
+            font-size: 34px;
+            color: #172033;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            height: 52px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            padding: 0 15px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+        }
+
+        .password-hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .register-btn {
+            width: 100%;
+            height: 53px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .register-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .register-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .left-panel,
+            .right-panel {
+                width: 100%;
+            }
+
+            .left-panel {
+                padding: 35px;
+            }
+
+            .right-panel {
+                padding: 40px 30px;
+            }
+
+            .left-panel h1 {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- LEFT SIDE -->
+
+    <section class="left-panel">
+
+        <div class="brand-icon">
+            AI
+        </div>
+
+        <h1>
+            Build your intelligent workspace.
+        </h1>
+
+        <p>
+            Create your account and start searching,
+            exploring, and interacting with your enterprise
+            knowledge using AI.
+        </p>
+
+
+        <div class="feature">
+            <div class="check">✓</div>
+            <span>AI-powered document search</span>
+        </div>
+
+        <div class="feature">
+            <div class="check">✓</div>
+            <span>Context-aware conversations</span>
+        </div>
+
+        <div class="feature">
+            <div class="check">✓</div>
+            <span>Secure authentication</span>
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+
+    <section class="right-panel">
+
+        <h2>
+            Create account
+        </h2>
+
+        <p class="subtitle">
+            Join your Enterprise AI Search workspace
+        </p>
+
+
+        <div id="message" class="message"></div>
+
+
+        <form id="registerForm">
+
+
+            <div class="form-group">
+
+                <label for="firstName">
+                    First name
+                </label>
+
+                <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Enter your first name"
+                        autocomplete="given-name"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lastName">
+                    Last name
+                </label>
+
+                <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Enter your last name"
+                        autocomplete="family-name"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email address
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                >
+
+                <div class="password-hint">
+                    Password must contain at least 6 characters.
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm password
+                </label>
+
+                <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                >
+
+            </div>
+
+
+            <button
+                    type="submit"
+                    id="registerBtn"
+                    class="register-btn">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Sign in
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const message =
+        document.getElementById("message");
+
+    const registerBtn =
+        document.getElementById("registerBtn");
+
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+    }
+
+
+    registerForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const firstName =
+                document.getElementById("firstName").value.trim();
+
+            const lastName =
+                document.getElementById("lastName").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+
+            if (password !== confirmPassword) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            registerBtn.disabled = true;
+
+            registerBtn.textContent =
+                "Creating Account...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:8080/api/v1/auth/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                firstName: firstName,
+
+                                lastName: lastName,
+
+                                email: email,
+
+                                password: password
+
+                            })
+                        }
+                    );
+
+
+                const contentType =
+                    response.headers.get("content-type") || "";
+
+
+                let data;
+
+                if (contentType.includes("application/json")) {
+
+                    data = await response.json();
+
+                } else {
+
+                    data = await response.text();
+
+                }
+
+
+                if (!response.ok) {
+
+                    let errorMessage =
+                        "Registration failed.";
+
+                    if (typeof data === "object" && data !== null) {
+
+                        errorMessage =
+                            data.message ||
+                            data.error ||
+                            "Registration failed.";
+
+                    } else if (data) {
+
+                        errorMessage = data;
+
+                    }
+
+                    throw new Error(errorMessage);
+
+                }
+
+
+                showMessage(
+                    "Account created successfully! Redirecting to login...",
+                    "success"
+                );
+
+
+                registerForm.reset();
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "login.html";
+
+                    },
+                    1500
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+                showMessage(
+                    error.message ||
+                    "Unable to create account. Please try again.",
+                    "error"
+                );
+
+
+            } finally {
+
+                registerBtn.disabled = false;
+
+                registerBtn.textContent =
+                    "Create Account";
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Enterprise AI Search</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+            height: 100vh;
+            background: #f5f7fb;
+            display: flex;
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+
+        .sidebar {
+            width: 280px;
+            background: #172554;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+
+        .logo {
+            padding: 25px 22px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+
+        .new-chat {
+            margin: 20px;
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .new-chat:hover {
+            background: #1d4ed8;
+        }
+
+
+        .conversation-title {
+            padding: 0 20px 12px;
+            color: #94a3b8;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+
+        .conversation-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 10px;
+        }
+
+
+        .conversation-item {
+            padding: 13px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            color: white;
+            transition: background 0.2s;
+        }
+
+
+        .conversation-item:hover {
+            background: #1e3a8a;
+        }
+
+
+        .conversation-item.active {
+            background: #2563eb;
+        }
+
+
+        .conversation-title-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .loading-conversations,
+        .empty-conversations,
+        .conversation-error {
+            padding: 15px;
+            font-size: 13px;
+        }
+
+
+        .loading-conversations,
+        .empty-conversations {
+            color: #94a3b8;
+        }
+
+
+        .conversation-error {
+            color: #f87171;
+        }
+
+
+        .logout {
+            margin: 20px;
+            padding: 11px;
+            border: 1px solid #475569;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+
+        .logout:hover {
+            background: #334155;
+        }
+
+
+        /* =====================================================
+           MAIN
+           ===================================================== */
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+
+        .topbar h2 {
+            color: #172554;
+            font-size: 20px;
+        }
+
+
+        .user-email {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           CHAT
+           ===================================================== */
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+
+        .welcome-message {
+            max-width: 800px;
+            margin: 70px auto;
+            text-align: center;
+        }
+
+
+        .welcome-message h1 {
+            color: #172554;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+
+        .welcome-message p {
+            color: #64748b;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+
+        .message {
+            max-width: 850px;
+            margin: 0 auto 20px;
+        }
+
+
+        .message.user-message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        .message.assistant-message {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+
+        .message-role {
+            font-size: 12px;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+
+        .message-content {
+            max-width: 75%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            line-height: 1.6;
+            font-size: 15px;
+            white-space: normal;
+        }
+
+
+        .user-message .message-content {
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+
+        .assistant-message .message-content {
+            background: white;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+
+
+        .thinking-message .message-content {
+            color: #64748b;
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           INPUT
+           ===================================================== */
+
+        .input-area {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px 30px;
+        }
+
+
+        .input-box {
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .question-input {
+            flex: 1;
+            padding: 15px 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+        }
+
+
+        .question-input:focus {
+            border-color: #2563eb;
+        }
+
+
+        .send-btn {
+            padding: 0 24px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .send-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        .send-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+
+            .message-content {
+                max-width: 85%;
+            }
+
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+
+            .chat-messages {
+                padding: 15px;
+            }
+
+
+            .input-area {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+     ========================================================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Enterprise <span>AI</span>
+    </div>
+
+
+    <button
+            id="newConversationBtn"
+            class="new-chat"
+            type="button"
+    >
+        + New Conversation
+    </button>
+
+
+    <div class="conversation-title">
+        Conversations
+    </div>
+
+
+    <div
+            id="conversationList"
+            class="conversation-list"
+    >
+        <div class="loading-conversations">
+            Loading conversations...
+        </div>
+    </div>
+
+
+    <button
+            id="logoutBtn"
+            class="logout"
+            type="button"
+    >
+        Logout
+    </button>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <h2 id="currentTitle">
+            Enterprise AI Search
+        </h2>
+
+
+        <div
+                id="userEmail"
+                class="user-email"
+        >
+        </div>
+
+    </header>
+
+
+
+    <!-- CHAT -->
+
+    <section
+            id="chatMessages"
+            class="chat-messages"
+    >
+
+        <div class="welcome-message">
+
+            <h1>
+                Welcome to Enterprise AI Search
+            </h1>
+
+            <p>
+                Search your documents, ask questions
+                and get intelligent AI-powered answers
+                from your knowledge base.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- INPUT -->
+
+    <footer class="input-area">
+
+        <div class="input-box">
+
+            <input
+                    id="messageInput"
+                    class="question-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Ask something about your documents..."
+            >
+
+
+            <button
+                    id="sendButton"
+                    class="send-btn"
+                    type="button"
+            >
+                Send
+            </button>
+
+        </div>
+
+    </footer>
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     IMPORTANT:
+     api.js MUST load before chat.js
+     ========================================================= -->
+
+<script src="js/api.js"></script>
+
+<script src="js/chat.js"></script>
+
+
+<!-- =========================================================
+     LOGOUT
+     ========================================================= -->
+
+<script>
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                localStorage.removeItem("jwtToken");
+                localStorage.removeItem("token");
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("userEmail");
+                localStorage.removeItem("email");
+                localStorage.removeItem("isLoggedIn");
+
+                window.location.href =
+                    "login.html";
+            }
+        );
+
+</script>
+
+
+</body>
+
+</html>

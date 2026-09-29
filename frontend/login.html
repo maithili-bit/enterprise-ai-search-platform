@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Enterprise AI Search</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- LEFT BRANDING -->
+        <div class="auth-brand">
+
+            <div class="brand-logo">
+                <span>AI</span>
+            </div>
+
+            <h1>Enterprise AI Search</h1>
+
+            <p>
+                Search your documents, ask questions,
+                and get intelligent answers powered by AI.
+            </p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span>✓</span>
+                    <p>AI-powered document search</p>
+                </div>
+
+                <div class="feature-item">
+                    <span>✓</span>
+                    <p>Intelligent conversations</p>
+                </div>
+
+                <div class="feature-item">
+                    <span>✓</span>
+                    <p>Context-aware answers</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div class="auth-form-section">
+            <div class="auth-form">
+
+                <h2>Welcome back</h2>
+
+                <p class="auth-subtitle">
+                    Sign in to continue to your workspace
+                </p>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email"
+                               placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password"
+                               placeholder="Enter your password" required>
+                    </div>
+
+                    <div id="loginError" class="error-message"></div>
+
+                    <button type="submit" class="primary-button" id="loginButton">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <a href="register.html">Create account</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    const AUTH_BASE_URL = "http://localhost:8080/api/v1/auth";
+
+    const loginForm   = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginError  = document.getElementById("loginError");
+
+    // If already logged in, go straight to the dashboard
+    if (localStorage.getItem("token")) {
+        window.location.replace("dashboard.html");
+    }
+
+    loginForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const email    = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        loginError.textContent = "";
+
+        if (!email || !password) {
+            loginError.textContent = "Please enter email and password.";
+            return;
+        }
+
+        try {
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Signing in...";
+
+            const response = await fetch(AUTH_BASE_URL + "/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ email: email, password: password })
+            });
+
+            const text = await response.text();
+
+            let data = null;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error("Response is not JSON:", text);
+            }
+
+            if (!response.ok) {
+                let message = "Login failed.";
+                if (data && data.message) message = data.message;
+                else if (data && data.error) message = data.error;
+                else if (text) message = text;
+                throw new Error(message);
+            }
+
+            const token = data && (data.token || data.jwt || data.accessToken);
+
+            if (!token) {
+                throw new Error("Login succeeded but JWT token was not returned.");
+            }
+
+            // SAVE TOKEN under every key used across the app
+            localStorage.setItem("token", token);        // api.js / chat.js / chat.html
+            localStorage.setItem("jwtToken", token);
+            localStorage.setItem("accessToken", token);
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("isLoggedIn", "true");
+
+            window.location.replace("dashboard.html");
+
+        } catch (error) {
+
+            console.error("LOGIN ERROR:", error);
+
+            loginError.textContent =
+                error.message || "Unable to login. Please try again.";
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Sign In";
+        }
+    });
+
+</script>
+
+</body>
+</html>

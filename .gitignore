@@ -1,0 +1,25 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Maven
+target/
+
+# Uploaded/generated files
+uploads/
+
+# Environment / secrets
+.env
+*.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
