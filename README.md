@@ -64,6 +64,19 @@ integration, and LLM-powered responses.
 - Docker
 
 ---
+## Backend Responsibilities
+
+• Developed REST APIs using Java and Spring Boot
+• Implemented JWT-based authentication using Spring Security
+• Built document upload and management APIs
+• Implemented PostgreSQL persistence using JPA/Hibernate
+• Implemented semantic search using vector embeddings and pgvector
+• Built RAG-based question answering
+• Integrated Ollama for LLM responses
+• Implemented conversation and chat history APIs
+• Integrated Apache Kafka for document upload events
+• Tested APIs using Postman
+```
 
 # 🏗️ Architecture
 
